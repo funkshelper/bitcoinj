@@ -40,8 +40,8 @@ public final class HDUtils {
     private static final ECDomainParameters ecParams;
 
     static {
-        // All clients must agree on the curve to use by agreement. Bitcoin uses secp256k1.
-        X9ECParameters params = SECNamedCurves.getByName("secp256k1");
+        // All clients must agree on the curve to use by agreement. Woodcoin uses prime256v1.
+        X9ECParameters params = SECNamedCurves.getByName("prime256v1");
         ecParams = new ECDomainParameters(params.getCurve(), params.getG(), params.getN(), params.getH());
     }
 

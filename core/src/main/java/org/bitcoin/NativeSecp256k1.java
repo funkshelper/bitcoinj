@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// enabled = false..  perhaps we can ignore this one as well - funkenstein
+
 package org.bitcoin;
 
 import java.nio.ByteBuffer;

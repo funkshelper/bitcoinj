@@ -22,7 +22,7 @@ import com.google.bitcoin.crypto.KeyCrypterException;
 import com.google.bitcoin.crypto.TransactionSignature;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
-import org.bitcoin.NativeSecp256k1;
+//import org.bitcoin.NativeSecp256k1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongycastle.asn1.*;
@@ -85,7 +85,7 @@ public class ECKey implements Serializable {
 
     static {
         // All clients must agree on the curve to use by agreement. Bitcoin uses secp256k1.
-        X9ECParameters params = SECNamedCurves.getByName("secp256k1");
+        X9ECParameters params = SECNamedCurves.getByName("prime256v1");
         CURVE = new ECDomainParameters(params.getCurve(), params.getG(), params.getN(), params.getH());
         HALF_CURVE_ORDER = params.getN().shiftRight(1);
         secureRandom = new SecureRandom();
@@ -237,7 +237,7 @@ public class ECKey implements Serializable {
             DERSequenceGenerator seq = new DERSequenceGenerator(baos);
             seq.addObject(new ASN1Integer(1)); // version
             seq.addObject(new DEROctetString(priv.toByteArray()));
-            seq.addObject(new DERTaggedObject(0, SECNamedCurves.getByName("secp256k1").toASN1Primitive()));
+            seq.addObject(new DERTaggedObject(0, SECNamedCurves.getByName("prime256v1").toASN1Primitive()));
             seq.addObject(new DERTaggedObject(1, new DERBitString(getPubKey())));
             seq.close();
             return baos.toByteArray();
@@ -486,8 +486,8 @@ public class ECKey implements Serializable {
         if (FAKE_SIGNATURES)
             return true;
 
-        if (NativeSecp256k1.enabled)
-            return NativeSecp256k1.verify(data, signature.encodeToDER(), pub);
+        //if (NativeSecp256k1.enabled)
+          //  return NativeSecp256k1.verify(data, signature.encodeToDER(), pub);
 
         ECDSASigner signer = new ECDSASigner();
         ECPublicKeyParameters params = new ECPublicKeyParameters(CURVE.getCurve().decodePoint(pub), CURVE);
@@ -511,8 +511,8 @@ public class ECKey implements Serializable {
      * @param pub       The public key bytes to use.
      */
     public static boolean verify(byte[] data, byte[] signature, byte[] pub) {
-        if (NativeSecp256k1.enabled)
-            return NativeSecp256k1.verify(data, signature, pub);
+       // if (NativeSecp256k1.enabled)
+       //     return NativeSecp256k1.verify(data, signature, pub);
         return verify(data, ECDSASignature.decodeFromDER(signature), pub);
     }
 
